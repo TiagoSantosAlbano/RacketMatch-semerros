@@ -25,7 +25,7 @@ export default function ChatDetailScreen() {
   const [sending, setSending] = useState(false);
   const flatListRef = useRef<any>(null);
 
-  // Buscar o chat e mensagens
+
   useEffect(() => {
     if (!chatId) return;
     const fetchChat = async () => {
@@ -48,10 +48,10 @@ export default function ChatDetailScreen() {
     try {
       await api.post(`/chats/${chatId}/message`, { text: message });
       setMessage('');
-      // refresh
+
       const res = await api.get(`/chats/${chatId}`);
       setChat(res.data);
-      // Scroll para baixo
+
       setTimeout(() => flatListRef.current?.scrollToEnd({ animated: true }), 100);
     } finally {
       setSending(false);

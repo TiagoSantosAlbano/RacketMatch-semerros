@@ -18,7 +18,7 @@ export default function ProfileScreen() {
   const { user, logout, login, loading } = useAuth();
   const [editMode, setEditMode] = useState(false);
 
-  // Estado local apenas para edição temporária
+
   const [name, setName] = useState(user?.name || '');
   const [skill, setSkill] = useState(user?.skill_level?.toString() || '');
   const [locations, setLocations] = useState(
@@ -44,13 +44,13 @@ export default function ProfileScreen() {
     );
   }
 
-  // Se não houver utilizador, redireciona para login (sempre via contexto!)
+  
   if (!user) {
-    setTimeout(() => router.replace('/login'), 100); // evitar update on render
+    setTimeout(() => router.replace('/login'), 100); 
     return null;
   }
 
-  // Helpers para mostrar arrays bonitinhos
+  
   const renderLocations = () =>
     Array.isArray(user.preferredLocations)
       ? user.preferredLocations.join(', ')
@@ -60,7 +60,7 @@ export default function ProfileScreen() {
       ? user.preferredTimes.join(', ')
       : (user.preferredTimes || '');
 
-  // Atualizar perfil: faz PUT e atualiza contexto!
+ 
   const handleSave = async () => {
     if (!user) return;
     setSaving(true);
@@ -81,7 +81,7 @@ export default function ProfileScreen() {
       const response = await api.put(`/users/${user._id}`, payload, {
         headers: { Authorization: `Bearer ${token}` }
       });
-      // Atualiza o contexto com o novo user
+   
       await login(token, response.data);
       setEditMode(false);
       Alert.alert('Sucesso', 'Dados atualizados!');
@@ -92,7 +92,7 @@ export default function ProfileScreen() {
     }
   };
 
-  // Eliminar user: faz DELETE, depois faz logout (no contexto)
+ 
   const handleDelete = async () => {
     if (!user) return;
     Alert.alert(

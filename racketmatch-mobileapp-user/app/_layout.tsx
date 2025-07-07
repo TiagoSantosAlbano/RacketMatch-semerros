@@ -1,4 +1,4 @@
-// app/_layout.tsx
+
 import { useEffect } from 'react';
 import { Stack } from 'expo-router';
 import { useColorScheme } from 'react-native';
@@ -11,14 +11,13 @@ import * as SplashScreen from 'expo-splash-screen';
 
 import { AuthProvider } from '../context/AuthContext';
 
-// Impede o splash desaparecer automaticamente até a app estar pronta
+
 SplashScreen.preventAutoHideAsync();
 
 export default function RootLayout() {
   const colorScheme = useColorScheme();
 
   useEffect(() => {
-    // Oculta splash quando o layout está carregado
     SplashScreen.hideAsync().catch(() => {});
   }, []);
 

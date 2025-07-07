@@ -22,12 +22,10 @@ export default function StartConversationScreen() {
     }
     setLoading(true);
     try {
-      // Usa o endpoint certo do backend: POST /api/chats, { targetName }
       const res = await api.post('/chats', { targetName: targetUsername.trim() });
       const chatId = res.data.chatId || res.data._id;
       if (!chatId) throw new Error('Não foi possível criar/obter a conversa!');
-      // Redireciona para chat-detail
-      router.replace(`/chat-detail/${chatId}`);
+        router.replace(`/chat-detail/${chatId}`);
     } catch (err: any) {
       Alert.alert('Erro', err.response?.data?.message || err.message || 'Erro ao criar conversa.');
     } finally {

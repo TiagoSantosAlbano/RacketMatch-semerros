@@ -4,7 +4,7 @@ const Chat = require('../models/Chat');
 const User = require('../models/User');
 const authMiddleware = require('../middleware/authMiddleware');
 
-// Buscar todos os chats do utilizador autenticado
+
 router.get('/', authMiddleware, async (req, res) => {
   try {
     const userId = req.user._id;
@@ -13,22 +13,21 @@ router.get('/', authMiddleware, async (req, res) => {
       .populate('messages.sender', 'name');
     res.json({ chats });
   } catch (err) {
-    res.status(500).json({ message: 'Erro ao buscar conversas.' });
+    res.status(500).json({ message: 'Erro ao procurar conversas.' });
   }
 });
 
-// Criar ou buscar chat por NOME do utilizador
+
 router.post('/', authMiddleware, async (req, res) => {
   try {
     const userId1 = req.user._id;
     const { targetName } = req.body;
     if (!targetName) return res.status(400).json({ message: 'Nome do destinatário obrigatório.' });
 
-    // Busca o utilizador de destino
+
     const user2 = await User.findOne({ name: targetName });
     if (!user2) return res.status(404).json({ message: 'Utilizador destino não encontrado.' });
 
-    // Não duplicar chats!
     let chat = await Chat.findOne({ participants: { $all: [userId1, user2._id], $size: 2 } });
     if (!chat) {
       chat = new Chat({ participants: [userId1, user2._id], messages: [] });
@@ -40,7 +39,7 @@ router.post('/', authMiddleware, async (req, res) => {
   }
 });
 
-// Obter mensagens de um chat específico
+
 router.get('/:chatId', authMiddleware, async (req, res) => {
   try {
     const chat = await Chat.findById(req.params.chatId)
@@ -56,7 +55,7 @@ router.get('/:chatId', authMiddleware, async (req, res) => {
   }
 });
 
-// Enviar mensagem
+
 router.post('/:chatId/message', authMiddleware, async (req, res) => {
   try {
     const { chatId } = req.params;

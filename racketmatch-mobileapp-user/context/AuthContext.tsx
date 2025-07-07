@@ -1,8 +1,8 @@
-// context/AuthContext.tsx
+
 import React, { createContext, useContext, useEffect, useState } from 'react';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
-// Interface User com todos os campos do backend!
+
 export interface User {
   _id: string;
   name: string;
@@ -14,11 +14,12 @@ export interface User {
   tenantId: string;
   premiumSince?: string;
   lastSeen?: string;
+
 }
 
 interface AuthContextType {
   user: User | null;
-  token: string | null;
+  token: string | null;  
   loading: boolean;
   login: (token: string, user: User) => Promise<void>;
   logout: () => Promise<void>;

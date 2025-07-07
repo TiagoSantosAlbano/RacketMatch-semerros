@@ -6,12 +6,12 @@ const authMiddleware = require('../middleware/authMiddleware');
 
 const router = express.Router();
 
-// Rota de teste
+
 router.get('/ping', (req, res) => {
   res.send('✅ Rota GET /ping ativa');
 });
 
-// Criar novo utilizador (register)
+
 router.post('/register', async (req, res) => {
   try {
     const {
@@ -69,7 +69,7 @@ router.post('/register', async (req, res) => {
   }
 });
 
-// LOGIN
+
 router.post('/login', async (req, res) => {
   try {
     const { email, password } = req.body;
@@ -110,7 +110,7 @@ router.post('/login', async (req, res) => {
   }
 });
 
-// GET utilizador autenticado
+
 router.get('/me', authMiddleware, async (req, res) => {
   try {
     const user = req.user;
@@ -129,12 +129,12 @@ router.get('/me', authMiddleware, async (req, res) => {
       lastSeen: user.lastSeen,
     });
   } catch (error) {
-    console.error('❌ Erro ao buscar utilizador:', error);
-    res.status(500).json({ message: 'Erro ao buscar utilizador.' });
+    console.error('❌ Erro ao procurar utilizador:', error);
+    res.status(500).json({ message: 'Erro ao procurar utilizador.' });
   }
 });
 
-// GET user por ID (apenas o próprio)
+
 router.get('/:id', authMiddleware, async (req, res) => {
   try {
     if (!req.user._id.equals(req.params.id)) {
@@ -155,12 +155,12 @@ router.get('/:id', authMiddleware, async (req, res) => {
       lastSeen: user.lastSeen,
     });
   } catch (error) {
-    console.error('❌ Erro ao buscar utilizador por ID:', error);
+    console.error('❌ Erro ao procurar utilizador por ID:', error);
     res.status(500).json({ message: 'Erro no servidor.' });
   }
 });
 
-// PUT editar perfil (apenas o próprio)
+
 router.put('/:id', authMiddleware, async (req, res) => {
   try {
     if (!req.user._id.equals(req.params.id)) {
@@ -210,7 +210,7 @@ router.put('/:id', authMiddleware, async (req, res) => {
   }
 });
 
-// DELETE utilizador (apenas o próprio)
+
 router.delete('/:id', authMiddleware, async (req, res) => {
   try {
     if (!req.user._id.equals(req.params.id)) {
@@ -224,7 +224,7 @@ router.delete('/:id', authMiddleware, async (req, res) => {
   }
 });
 
-// Ativar Premium manualmente (admin manual)
+
 router.post('/:id/activate-premium', async (req, res) => {
   try {
     const user = await User.findByIdAndUpdate(

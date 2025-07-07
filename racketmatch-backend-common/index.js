@@ -29,7 +29,6 @@ app.use(express.json());
 
 app.use('/uploads', express.static(path.join(__dirname, 'public/uploads')));
 
-const adminRoutes = require('./routes/adminAuth');
 const courtRoutes = require('./routes/courtRoutes');
 const matchRoutes = require('./routes/matchRoutes');
 const userRoutes = require('./routes/userRoutes');
@@ -38,9 +37,18 @@ const premiumRoutes = require('./routes/premiumRoutes');
 const notificationRoutes = require('./routes/notificationRoutes');
 const paypalRoutes = require('./routes/paypalRoutes');
 const chatRoutes = require('./routes/chatRoutes');
+const reservationRoutes = require('./routes/reservationRoutes');
+const adminRoutes = require('./routes/adminAuth');
+
+
+const adminUserRoutes = require('./routes/adminUserRoutes');
+const adminMatchRoutes = require('./routes/adminMatchRoutes');
+const adminBookingRoutes = require('./routes/adminBookingRoutes');
+const adminCourtRoutes = require('./routes/adminCourtRoutes');
+
 
 app.use('/api/admin-auth', adminRoutes);
-app.use('/api/admin/courts', courtRoutes);
+
 app.use('/api/courts', courtRoutes);
 app.use('/api/matches', matchRoutes);
 app.use('/api/users', userRoutes);
@@ -49,6 +57,12 @@ app.use('/api/premium', premiumRoutes);
 app.use('/api/notifications', authMiddleware, notificationRoutes);
 app.use('/api/paypal', paypalRoutes);
 app.use('/api/chats', chatRoutes);
+app.use('/api/reservations', reservationRoutes);
+
+app.use('/api/admin/courts', adminCourtRoutes);
+app.use('/api/admin/matches', adminMatchRoutes);
+app.use('/api/admin/users', adminUserRoutes);
+app.use('/api/admin/bookings', adminBookingRoutes);
 
 app.get('/pagamento/sucesso', (req, res) => {
   res.send('✅ Pagamento realizado com sucesso!');
@@ -59,10 +73,6 @@ app.get('/pagamento/cancelado', (req, res) => {
 app.get('/paypal-cancel', (req, res) => {
   res.send('❌ Pagamento PayPal cancelado.');
 });
-
-// app.use((req, res) => {
-//   res.status(404).json({ message: 'Rota não encontrada' });
-// });
 
 const PORT = process.env.PORT || 5000;
 const PUBLIC_IP = process.env.PUBLIC_IP || 'localhost';

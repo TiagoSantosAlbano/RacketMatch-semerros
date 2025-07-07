@@ -12,20 +12,21 @@ const authenticateToken = async (req, res, next) => {
 
   try {
     const decoded = jwt.verify(token, process.env.JWT_SECRET);
-
     if (!decoded.id) {
       return res.status(401).json({ message: 'Token inválido (sem id de usuário).' });
     }
-
     const user = await User.findById(decoded.id);
     if (!user) {
       return res.status(401).json({ message: 'Usuário não encontrado.' });
     }
-
     user.lastSeen = new Date();
     await user.save();
-
-    req.user = user;
+    req.user = {
+      _id: user._id, 
+      tenantId: user.tenantId,
+      name: user.name,
+      email: user.email,
+    };
     next();
   } catch (error) {
     return res.status(403).json({ message: 'Token inválido ou expirado.' });
